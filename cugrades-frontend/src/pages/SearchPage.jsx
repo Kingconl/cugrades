@@ -38,7 +38,7 @@ export default function SearchPage() {
     <div className="page-shell hero">
       <div className="hero-container">
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
-          <div className="hero-badge">Carleton Grades</div>
+          <div className="hero-badge">CU Grades</div>
           <h1 className="hero-title">Search by subject</h1>
           <p className="hero-subtitle">In beta and currently only supports COMP(Computer Science).</p>
         </div>

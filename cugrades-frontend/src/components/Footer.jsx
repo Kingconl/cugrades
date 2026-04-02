@@ -4,7 +4,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container site-footer-content">
         <p>
-          This site is independently operated and is not affiliated with Carleton University.
+          Unofficial student-made project. Not affiliated with, endorsed by, or sponsored by Carleton University.
         </p>
         <p>
           Grade data for Fall 2024 through Winter 2025 was obtained through a Freedom of Information and Protection of Privacy Act request.
