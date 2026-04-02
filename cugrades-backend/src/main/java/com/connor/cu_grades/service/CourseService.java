@@ -1,7 +1,9 @@
 package com.connor.cu_grades.service;
 
+import com.connor.cu_grades.dto.BasicCourseReponse;
 import com.connor.cu_grades.dto.CourseResponse;
 import com.connor.cu_grades.dto.DetailedCourseResponse;
+import com.connor.cu_grades.dto.SubjectResponse;
 import com.connor.cu_grades.model.Course;
 import com.connor.cu_grades.model.GradeDistribution;
 import com.connor.cu_grades.model.Offering;
@@ -352,6 +354,16 @@ public class CourseService {
                 .map(grade -> new DetailedCourseResponse.GradeDistributionItem(
                         grade,
                         gradeMap.getOrDefault(grade, 0)
+                ))
+                .toList();
+    }
+
+    public List<BasicCourseReponse> getCouresByQuery(String query) {
+        return courseRepository.findAllByCourseNumberContainingIgnoreCaseOrTitleContainingIgnoreCase(query.trim(), query.trim()).stream()
+                .map(course -> new BasicCourseReponse(
+                        course.getId(),
+                        course.getCourseNumber(),
+                        course.getTitle()
                 ))
                 .toList();
     }
