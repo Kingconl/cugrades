@@ -27,7 +27,7 @@ function point12GpaToLetter(gpa) {
   else if (gpa >= 1) letter = "D-";
   else letter = "F";
 
-  return `${letter}(${Number(gpa).toFixed(2)})`;
+  return `${letter}(${Number(gpa).toFixed(0)})`;
 }
 
 export default function SubjectCoursesPage() {

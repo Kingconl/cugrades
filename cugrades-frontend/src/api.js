@@ -1,6 +1,10 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '';
+const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
 
 export function apiUrl(path) {
+  if (!path.startsWith('/')) {
+    throw new Error(`API path must start with "/": ${path}`);
+  }
+
   return `${API_BASE}${path}`;
 }
 
