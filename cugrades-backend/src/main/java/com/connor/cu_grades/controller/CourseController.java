@@ -4,11 +4,7 @@ package com.connor.cu_grades.controller;
 import com.connor.cu_grades.dto.BasicCourseReponse;
 import com.connor.cu_grades.dto.CourseResponse;
 import com.connor.cu_grades.dto.DetailedCourseResponse;
-import com.connor.cu_grades.dto.SubjectResponse;
-import com.connor.cu_grades.model.Course;
 import com.connor.cu_grades.service.CourseService;
-import com.connor.cu_grades.service.SubjectService;
-import jakarta.validation.constraints.Null;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -50,7 +46,7 @@ public class CourseController {
             return Collections.emptyList();
         }
 
-        return courseService.getCouresByQuery(query);
+        return courseService.getCoursesByQuery(query);
     }
 
     @GetMapping("{code}/{course}/details")

@@ -3,7 +3,6 @@ package com.connor.cu_grades.service;
 import com.connor.cu_grades.dto.BasicCourseReponse;
 import com.connor.cu_grades.dto.CourseResponse;
 import com.connor.cu_grades.dto.DetailedCourseResponse;
-import com.connor.cu_grades.dto.SubjectResponse;
 import com.connor.cu_grades.model.Course;
 import com.connor.cu_grades.model.GradeDistribution;
 import com.connor.cu_grades.model.Offering;
@@ -15,7 +14,6 @@ import com.connor.cu_grades.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -358,12 +356,13 @@ public class CourseService {
                 .toList();
     }
 
-    public List<BasicCourseReponse> getCouresByQuery(String query) {
+    public List<BasicCourseReponse> getCoursesByQuery(String query) {
         return courseRepository.findAllByCourseNumberContainingIgnoreCaseOrTitleContainingIgnoreCase(query.trim(), query.trim()).stream()
                 .map(course -> new BasicCourseReponse(
                         course.getId(),
                         course.getCourseNumber(),
-                        course.getTitle()
+                        course.getTitle(),
+                        course.getSubject().getCode()
                 ))
                 .toList();
     }
