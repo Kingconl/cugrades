@@ -38,6 +38,9 @@ cugrades/
 └── README.md
 ```
 
+## Acknowledgments
+The concept behind cugrades.ca is inspired by [uo.grades.zone](https://github.com/alexander-azizi-martin/uo.zone)(formally uo.zone), a grade lookup request made for the University of Ottawa. 
+
 ## Prerequisites
 
 Install these before running the project:
