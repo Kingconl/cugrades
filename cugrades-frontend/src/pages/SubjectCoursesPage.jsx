@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchJson } from '../api';
 import StatPill from '../components/StatPill';
 import DistributionChart from '../components/DistributionChart';
+
+const PAGE_SIZE = 6;
 
 function titleFromCode(code) {
   return code?.toUpperCase() || '';
 }
 
 function point12GpaToLetter(gpa) {
-  if (gpa == null) return "—";
+  if (gpa == null) return '—';
 
-  let letter = "";
+  let letter = '';
 
-  if (gpa >= 12) letter = "A+";
-  else if (gpa >= 11) letter = "A";
-  else if (gpa >= 10) letter = "A-";
-  else if (gpa >= 9) letter = "B+";
-  else if (gpa >= 8) letter = "B";
-  else if (gpa >= 7) letter = "B-";
-  else if (gpa >= 6) letter = "C+";
-  else if (gpa >= 5) letter = "C";
-  else if (gpa >= 4) letter = "C-";
-  else if (gpa >= 3) letter = "D+";
-  else if (gpa >= 2) letter = "D";
-  else if (gpa >= 1) letter = "D-";
-  else letter = "F";
+  if (gpa >= 12) letter = 'A+';
+  else if (gpa >= 11) letter = 'A';
+  else if (gpa >= 10) letter = 'A-';
+  else if (gpa >= 9) letter = 'B+';
+  else if (gpa >= 8) letter = 'B';
+  else if (gpa >= 7) letter = 'B-';
+  else if (gpa >= 6) letter = 'C+';
+  else if (gpa >= 5) letter = 'C';
+  else if (gpa >= 4) letter = 'C-';
+  else if (gpa >= 3) letter = 'D+';
+  else if (gpa >= 2) letter = 'D';
+  else if (gpa >= 1) letter = 'D-';
+  else letter = 'F';
 
   return `${letter}(${Number(gpa).toFixed(0)})`;
 }
@@ -37,8 +39,14 @@ export default function SubjectCoursesPage() {
 
   const [courses, setCourses] = useState([]);
   const [level, setLevel] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
+
+  const sentinelRef = useRef(null);
 
   const subject = location.state?.subject || {
     code: subjectCode?.toUpperCase(),
@@ -46,34 +54,87 @@ export default function SubjectCoursesPage() {
   };
 
   useEffect(() => {
+    setCourses([]);
+    setOffset(0);
+    setHasMore(true);
+    setError('');
+  }, [subjectCode, level]);
+
+  useEffect(() => {
     let mounted = true;
 
     async function loadCourses() {
       try {
-        setLoading(true);
-        setError('');
-
-        let url = `/api/courses/${encodeURIComponent(subjectCode)}/courses`;
-
-        if (level) {
-          url += `?level=${encodeURIComponent(level)}`;
+        if (offset === 0) {
+          setLoading(true);
+        } else {
+          setLoadingMore(true);
         }
 
+        setError('');
+
+        const params = new URLSearchParams();
+        if (level) params.set('level', level);
+        params.set('limit', PAGE_SIZE);
+        params.set('offset', offset);
+
+        const url = `/api/courses/${encodeURIComponent(subjectCode)}/courses?${params.toString()}`;
         const data = await fetchJson(url);
-        if (mounted) setCourses(Array.isArray(data) ? data : []);
+        const newCourses = Array.isArray(data) ? data : [];
+
+        if (!mounted) return;
+
+        if (offset === 0) {
+          setCourses(newCourses);
+        } else {
+          setCourses((prev) => [...prev, ...newCourses]);
+        }
+
+        setHasMore(newCourses.length === PAGE_SIZE);
       } catch (err) {
-        if (mounted) setError(err.message || 'Could not load courses.');
+        if (mounted) {
+          setError(err.message || 'Could not load courses.');
+        }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+          setLoadingMore(false);
+        }
       }
     }
 
-    loadCourses();
+    if (subjectCode) {
+      loadCourses();
+    }
 
     return () => {
       mounted = false;
     };
-  }, [subjectCode, level]);
+  }, [subjectCode, level, offset]);
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node) return;
+    if (loading || loadingMore || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting) {
+          setOffset((prev) => prev + PAGE_SIZE);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '250px',
+        threshold: 0,
+      }
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, [loading, loadingMore, hasMore, courses.length]);
 
   return (
     <div className="page-shell layout-section">
@@ -155,7 +216,7 @@ export default function SubjectCoursesPage() {
                 <button
                   className="primary-button course-button"
                   onClick={() =>
-                    navigate(`/subjects/${subject.code}/courses/${course.courseCode}`, {
+                    navigate(`/subjects/${subjectCode}/courses/${course.courseCode}`, {
                       state: { subject, course },
                     })
                   }
@@ -166,6 +227,24 @@ export default function SubjectCoursesPage() {
             </div>
           ))}
         </div>
+
+        {!loading && !error && courses.length === 0 && (
+          <div className="loading-text">No courses found.</div>
+        )}
+
+        {loadingMore && (
+          <div style={{ marginTop: '24px', textAlign: 'center' }} className="muted">
+            Loading more courses...
+          </div>
+        )}
+
+        {!loading && hasMore && <div ref={sentinelRef} style={{ height: '40px' }} />}
+
+        {!loading && !hasMore && courses.length > 0 && (
+          <div style={{ marginTop: '24px', textAlign: 'center' }} className="muted">
+            No more courses.
+          </div>
+        )}
       </div>
     </div>
   );

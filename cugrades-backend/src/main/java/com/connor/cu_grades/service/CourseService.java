@@ -34,21 +34,17 @@ public class CourseService {
 
 
 
-    public List<CourseResponse> getCourseListPooled(String code, String prefix) {
+    public List<CourseResponse> getCourseListPooled(String code, String prefix, Integer limit, Integer offset) {
         Optional<Integer> subjectIdOpt = subjectRepository.findIdByCodeIgnoreCase(code);
-
+        limit = (limit == null || limit <= 0) ? 6 : limit;
+        offset = (offset == null || offset < 0) ? 0 : offset;
         if (subjectIdOpt.isEmpty()) {
             return Collections.emptyList();
         }
 
         Integer subjectId = subjectIdOpt.get();
         List<Course> courses;
-        if(prefix == null){
-            courses = courseRepository.findAllBySubjectIdOrderByCourseNumberAsc(subjectId);
-        }
-        else{
-            courses = courseRepository.findAllBySubjectIdAndCourseNumberStartingWithOrderByCourseNumberAsc(subjectId, prefix);
-        }
+        courses = courseRepository.findCoursesWithPagination(subjectId, prefix, limit, offset);
         if (courses.isEmpty()) {
             return Collections.emptyList();
         }

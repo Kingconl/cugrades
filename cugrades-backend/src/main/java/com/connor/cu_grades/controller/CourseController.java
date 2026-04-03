@@ -36,8 +36,10 @@ public class CourseController {
 //    }
 
     @GetMapping("{code}/courses")
-    public List<CourseResponse> getCoursesBySubject(@PathVariable String code, @RequestParam(required = false) String level) {
-        return courseService.getCourseListPooled(code, level);
+    public List<CourseResponse> getCoursesBySubject(@PathVariable String code, @RequestParam(required = false) String level,
+    @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer offset
+    ) {
+        return courseService.getCourseListPooled(code, level, limit, offset);
     }
 
     @GetMapping
