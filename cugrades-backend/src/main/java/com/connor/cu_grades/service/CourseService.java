@@ -11,6 +11,7 @@ import com.connor.cu_grades.repository.CourseRepository;
 import com.connor.cu_grades.repository.GradeDistributionRepository;
 import com.connor.cu_grades.repository.OfferingRepository;
 import com.connor.cu_grades.repository.SubjectRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,7 +34,10 @@ public class CourseService {
     }
 
 
-
+    @Cacheable(
+            value = "coursesBySubject",
+            key = "#code + '-' + (#level == null ? '' : #level) + '-' + (#limit == null ? 'null' : #limit) + '-' + (#offset == null ? 'null' : #offset)"
+    )
     public List<CourseResponse> getCourseListPooled(String code, String prefix, Integer limit, Integer offset) {
         Optional<Integer> subjectIdOpt = subjectRepository.findIdByCodeIgnoreCase(code);
         limit = (limit == null || limit <= 0) ? 6 : limit;
@@ -247,6 +251,7 @@ public class CourseService {
         return totalPoints / totalStudents;
     }
 
+    @Cacheable(value = "courseDetail", key = "#code + '-' + #course")
     public DetailedCourseResponse getDetailedCourseBySubject(String subjectCode, String courseCode) {
         Optional<Course> courseOpt = courseRepository
                 .findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
