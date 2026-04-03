@@ -248,17 +248,11 @@ public class CourseService {
         return totalPoints / totalStudents;
     }
 
-    @Cacheable(value = "courseDetail", key = "#code + '-' + #course")
-    public DetailedCourseResponse getDetailedCourseBySubject(String courseCode, String subjectCode) {
+    @Cacheable(value = "courseDetail", key = "#subjectCode + '-' + #courseCode")
+    public DetailedCourseResponse getDetailedCourseBySubject(String subjectCode, String courseCode) {
 
-        Optional<Subject> subjectOpt = subjectRepository.findByCodeIgnoreCase(subjectCode);
-        if(subjectOpt.isEmpty()) {
-            return null;
-        }
-        Optional<Course> courseOpt = courseRepository
-                .findBySubjectAndCourseNumberIgnoreCase(subjectOpt.get(), courseCode);
-//        Optional<Course> courseOpt = courseRepository
-//                .findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
+
+        Optional<Course> courseOpt = courseRepository.findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
 
         if (courseOpt.isEmpty()) {
             return null;

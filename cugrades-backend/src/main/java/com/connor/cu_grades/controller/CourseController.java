@@ -55,7 +55,7 @@ public class CourseController {
 
     @GetMapping("{course}/{subject}/details")
     public DetailedCourseResponse getDetailedCoursesBySubject(@PathVariable String course, @PathVariable String subject) {
-        return courseService.getDetailedCourseBySubject(course, subject);
+        return courseService.getDetailedCourseBySubject(subject, course);
     }
 
 
