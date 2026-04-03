@@ -72,24 +72,23 @@ public class CourseResponse {
     }
 
     public static class OverallStats {
-        private BigDecimal median;
+        private BigDecimal mean;
         private BigDecimal mode;
 
         public OverallStats() {}
 
-        public OverallStats(BigDecimal median, BigDecimal mode) {
-            this.median = median;
+        public OverallStats(BigDecimal mean, BigDecimal mode) {
+            this.mean = mean;
             this.mode = mode;
         }
 
 
-
-        public BigDecimal getMedian() {
-            return median;
+        public BigDecimal getMean() {
+            return mean;
         }
 
-        public void setMedian(BigDecimal median) {
-            this.median = median;
+        public void setMean(BigDecimal mean) {
+            this.mean = mean;
         }
 
         public BigDecimal getMode() {

@@ -46,18 +46,18 @@ public class DetailedCourseResponse {
     }
 
     public static class OverallStats {
-        private Double median;
+        private Double mean;
         private Double mode;
 
-        public OverallStats( Double median, Double mode) {
-            this.median = median;
+        public OverallStats( Double mean, Double mode) {
+            this.mean = mean;
             this.mode = mode;
         }
 
 
 
-        public Double getMedian() {
-            return median;
+        public Double getMean() {
+            return mean;
         }
 
         public Double getMode() {
@@ -123,18 +123,18 @@ public class DetailedCourseResponse {
     public static class OfferingItem {
         private String term;
         private String section;
-        private BigDecimal median;
+        private BigDecimal mean;
         private BigDecimal mode;
 
         public OfferingItem(
                 String term,
                 String section,
-                BigDecimal median,
+                BigDecimal mean,
                 BigDecimal mode
         ) {
             this.term = term;
             this.section = section;
-            this.median = median;
+            this.mean = mean;
             this.mode = mode;
         }
 
@@ -146,8 +146,8 @@ public class DetailedCourseResponse {
             return section;
         }
 
-        public BigDecimal getMedian() {
-            return median;
+        public BigDecimal getMean() {
+            return mean;
         }
 
         public BigDecimal getMode() {

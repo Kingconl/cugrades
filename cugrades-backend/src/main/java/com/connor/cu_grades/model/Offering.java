@@ -42,21 +42,21 @@ public class Offering {
 
 
     @Column(precision = 5, scale = 2)
-    private BigDecimal median;
+    private BigDecimal mean;
 
     @Column(precision = 5, scale = 2)
     private BigDecimal mode;
     public Offering() {}
 
     public Offering(Integer id, Course course, Term term, Professor professor, String section,
-                    Integer studentsCount, BigDecimal median, BigDecimal mode) {
+                    Integer studentsCount, BigDecimal mean, BigDecimal mode) {
         this.id = id;
         this.course = course;
         this.term = term;
         this.professor = professor;
         this.section = section;
         this.studentsCount = studentsCount;
-        this.median = median;
+        this.mean = mean;
         this.mode = mode;
     }
 
@@ -64,8 +64,56 @@ public class Offering {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Course getCourse() {
         return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public BigDecimal getMode() {
+        return mode;
+    }
+
+    public void setMode(BigDecimal mode) {
+        this.mode = mode;
+    }
+
+    public Integer getStudentsCount() {
+        return studentsCount;
+    }
+
+    public void setStudentsCount(Integer studentsCount) {
+        this.studentsCount = studentsCount;
     }
 
     public Integer getLetterGradeCount() {
@@ -76,60 +124,11 @@ public class Offering {
         this.letterGradeCount = letterGradeCount;
     }
 
-    public Term getTerm() {
-        return term;
+    public BigDecimal getMean() {
+        return mean;
     }
 
-    public Professor getProfessor() {
-        return professor;
+    public void setMean(BigDecimal mean) {
+        this.mean = mean;
     }
-
-    public String getSection() {
-        return section;
-    }
-
-    public Integer getStudentsCount() {
-        return studentsCount;
-    }
-
-    public BigDecimal getMedian() {
-        return median;
-    }
-
-    public BigDecimal getMode() {
-        return mode;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public void setTerm(Term term) {
-        this.term = term;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
-
-    public void setStudentsCount(Integer studentsCount) {
-        this.studentsCount = studentsCount;
-    }
-
-    public void setMedian(BigDecimal median) {
-        this.median = median;
-    }
-
-    public void setMode(BigDecimal mode) {
-        this.mode = mode;
-    }
-
 }
