@@ -37,7 +37,6 @@ public class CourseController {
 //    }
 
 
-    @Cacheable(value = "coursesBySubject", key = "#code + '-' + #level + '-' + #limit + '-' + #offset")
     @GetMapping("{code}/courses")
     public List<CourseResponse> getCoursesBySubject(@PathVariable String code, @RequestParam(required = false) String level,
     @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer offset
@@ -54,7 +53,6 @@ public class CourseController {
         return courseService.getCoursesByQuery(query);
     }
 
-    @Cacheable(value = "courseDetail", key = "#subject + '-' + #courseNumber")
     @GetMapping("{code}/{course}/details")
     public DetailedCourseResponse getDetailedCoursesBySubject(@PathVariable String code, @PathVariable String course) {
         return courseService.getDetailedCourseBySubject(code, course);

@@ -36,7 +36,7 @@ public class CourseService {
 
     @Cacheable(
             value = "coursesBySubject",
-            key = "#code + '-' + (#level == null ? '' : #level) + '-' + (#limit == null ? 'null' : #limit) + '-' + (#offset == null ? 'null' : #offset)"
+            key = "#code + '-' + (#prefix == null ? '' : #prefix) + '-' + (#limit == null ? 'null' : #limit) + '-' + (#offset == null ? 'null' : #offset)"
     )
     public List<CourseResponse> getCourseListPooled(String code, String prefix, Integer limit, Integer offset) {
         Optional<Integer> subjectIdOpt = subjectRepository.findIdByCodeIgnoreCase(code);
