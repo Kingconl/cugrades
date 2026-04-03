@@ -53,9 +53,9 @@ public class CourseController {
         return courseService.getCoursesByQuery(query);
     }
 
-    @GetMapping("{code}/{course}/details")
-    public DetailedCourseResponse getDetailedCoursesBySubject(@PathVariable String code, @PathVariable String course) {
-        return courseService.getDetailedCourseBySubject(code, course);
+    @GetMapping("{course}/{subject}/details")
+    public DetailedCourseResponse getDetailedCoursesBySubject(@PathVariable String course, @PathVariable String subject) {
+        return courseService.getDetailedCourseBySubject(course, subject);
     }
 
 
