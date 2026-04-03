@@ -11,7 +11,7 @@ export default function Footer() {
         </p>
         <p>
           <a
-            href="https://www.google.com/search?q=N%2FA"
+            href="https://github.com/Kingconl/cugrades"
             target="_blank"
             rel="noreferrer"
             className="footer-link"
