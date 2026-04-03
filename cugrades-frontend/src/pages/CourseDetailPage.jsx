@@ -23,7 +23,7 @@ function point12GpaToLetter(gpa) {
   else if (gpa >= 1) letter = "D-";
   else letter = "F";
 
-  return `${letter}(${Number(gpa).toFixed(0)})`;
+  return `${letter}(${Number(gpa).toFixed(2)})`;
 }
 
 export default function CourseDetailPage() {
@@ -80,7 +80,7 @@ export default function CourseDetailPage() {
             <div className="stat-grid detail" style={{ marginBottom: 28 }}>
               <StatPill label="Subject" value={details.subject} />
               <StatPill label="Course" value={details.courseCode} />
-              <StatPill label="Overall Median" value={point12GpaToLetter(details.overallStats?.median)} />
+              <StatPill label="Overall Mean" value={point12GpaToLetter(details.overallStats?.mean)} />
               <StatPill label="Overall Mode" value={point12GpaToLetter(details.overallStats?.mode)} />
             </div>
 

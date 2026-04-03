@@ -18,7 +18,7 @@ CREATE TABLE offerings (
     section VARCHAR(20),
     students_count INTEGER,
     letter_grade_count INTEGER,
-    median NUMERIC(5,2),
+    mean NUMERIC(5,2),
     mode NUMERIC(5,2),
     CONSTRAINT uk_offering_course_term_prof_section
         UNIQUE (course_id, term_id, professor_id, section),

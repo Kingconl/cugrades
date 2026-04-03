@@ -27,7 +27,7 @@ export default function ProfessorCard({ professor }) {
                   {offering.term} · Section {offering.section}
                 </div>
                 <div className="offering-badges">
-                  <span className="outline-badge">Median: {offering.median ?? '—'}</span>
+                  <span className="outline-badge">Average: {offering.mean ?? '—'}</span>
                   <span className="outline-badge">Mode: {offering.mode ?? '—'}</span>
                 </div>
               </div>

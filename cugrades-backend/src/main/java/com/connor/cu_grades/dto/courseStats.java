@@ -5,39 +5,15 @@ import java.math.BigDecimal;
 public class courseStats {
     private String courseCode;
     private String title;
-    private BigDecimal median;
+    private BigDecimal mean;
     private BigDecimal mode;
     private int offeringsCount;
-    public courseStats(String courseCode, String title, BigDecimal median, BigDecimal mode, int offeringsCount) {
+    public courseStats(String courseCode, String title, BigDecimal mean, BigDecimal mode, int offeringsCount) {
         this.courseCode = courseCode;
         this.title = title;
-        this.median = median;
+        this.mean = mean;
         this.mode = mode;
         this.offeringsCount = offeringsCount;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public BigDecimal getMedian() {
-        return median;
-    }
-
-    public void setMedian(BigDecimal median) {
-        this.median = median;
     }
 
     public BigDecimal getMode() {
@@ -54,5 +30,29 @@ public class courseStats {
 
     public void setOfferingsCount(int offeringsCount) {
         this.offeringsCount = offeringsCount;
+    }
+
+    public BigDecimal getMean() {
+        return mean;
+    }
+
+    public void setMean(BigDecimal mean) {
+        this.mean = mean;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 }

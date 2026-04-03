@@ -97,7 +97,7 @@ public class CourseService {
                     pooledGrades.merge(label, gd.getCount(), Integer::sum);
                 }
             }
-            Double pooledMedian = calculateMedian12Point(pooledGrades);
+            Double pooledMean = calculateMean12Point(pooledGrades);
             Double pooledMode = calculateMode12Point(pooledGrades);
 
             CourseResponse response = new CourseResponse(
@@ -106,7 +106,7 @@ public class CourseService {
                     course.getTitle(),
                     totalStudents,
                     new CourseResponse.OverallStats(
-                            pooledMedian == null ? null : BigDecimal.valueOf(pooledMedian),
+                            pooledMean == null ? null : BigDecimal.valueOf(pooledMean),
                             pooledMode == null ? null : BigDecimal.valueOf(pooledMode)
                     ),
                     List.of(
@@ -224,6 +224,29 @@ public class CourseService {
         return null;
     }
 
+    private Double calculateMean12Point(Map<String, Integer> pooledGrades) {
+        if (pooledGrades == null || pooledGrades.isEmpty()) {
+            return null;
+        }
+
+        double totalPoints = 0;
+        int totalStudents = 0;
+
+        for (String grade : GRADE_ORDER) {
+            int count = pooledGrades.getOrDefault(grade, 0);
+            double points = GRADE_POINTS.getOrDefault(grade, 0.0);
+
+            totalPoints +=  points * count;
+            totalStudents += count;
+        }
+
+        if (totalStudents == 0) {
+            return null;
+        }
+
+        return totalPoints / totalStudents;
+    }
+
     public DetailedCourseResponse getDetailedCourseBySubject(String subjectCode, String courseCode) {
         Optional<Course> courseOpt = courseRepository
                 .findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
@@ -265,7 +288,7 @@ public class CourseService {
             );
         }
 
-        Double overallMedian = calculateMedian12Point(pooledCourseGrades);
+        Double overallMean = calculateMean12Point(pooledCourseGrades);
         Double overallMode = calculateMode12Point(pooledCourseGrades);
 
         Map<Integer, List<Offering>> offeringsByProfessorId = offerings.stream()
@@ -303,7 +326,7 @@ public class CourseService {
                     .map(o -> new DetailedCourseResponse.OfferingItem(
                             o.getTerm() != null ? o.getTerm().getCode() : null,
                             o.getSection(),
-                            o.getMedian(),
+                            o.getMean(),
                             o.getMode()
                     ))
                     .toList();
@@ -322,7 +345,7 @@ public class CourseService {
                 course.getSubject().getCode(),
                 course.getCourseNumber(),
                 course.getTitle(),
-                new DetailedCourseResponse.OverallStats(overallMedian, overallMode),
+                new DetailedCourseResponse.OverallStats(overallMean, overallMode),
                 professorStats
         );
     }
