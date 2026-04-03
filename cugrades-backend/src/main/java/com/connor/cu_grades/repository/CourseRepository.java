@@ -39,6 +39,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("offset") int offset
     );
     Optional<Course> findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(String subjectCode, String courseNumber);
+    Optional<Course> findBySubjectAndCourseNumberIgnoreCase(Subject subject, String courseNumber);
     List<Course> findAllBySubjectIdAndCourseNumberStartingWithOrderByCourseNumberAsc(int id, String prefix);
 
     List<Course> findAllByCourseNumberContainingIgnoreCaseOrTitleContainingIgnoreCase(String number, String title);

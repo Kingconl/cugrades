@@ -14,5 +14,5 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query("SELECT s.id FROM Subject s WHERE LOWER(s.code) = LOWER(:code)")
     Optional<Integer> findIdByCodeIgnoreCase(@Param("code") String code);
-
+    Optional<Subject> findByCodeIgnoreCase(String code);
 }

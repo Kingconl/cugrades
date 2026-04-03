@@ -3,10 +3,7 @@ package com.connor.cu_grades.service;
 import com.connor.cu_grades.dto.BasicCourseReponse;
 import com.connor.cu_grades.dto.CourseResponse;
 import com.connor.cu_grades.dto.DetailedCourseResponse;
-import com.connor.cu_grades.model.Course;
-import com.connor.cu_grades.model.GradeDistribution;
-import com.connor.cu_grades.model.Offering;
-import com.connor.cu_grades.model.Professor;
+import com.connor.cu_grades.model.*;
 import com.connor.cu_grades.repository.CourseRepository;
 import com.connor.cu_grades.repository.GradeDistributionRepository;
 import com.connor.cu_grades.repository.OfferingRepository;
@@ -252,9 +249,16 @@ public class CourseService {
     }
 
     @Cacheable(value = "courseDetail", key = "#code + '-' + #course")
-    public DetailedCourseResponse getDetailedCourseBySubject(String subjectCode, String courseCode) {
+    public DetailedCourseResponse getDetailedCourseBySubject(String courseCode, String subjectCode) {
+
+        Optional<Subject> subjectOpt = subjectRepository.findByCodeIgnoreCase(subjectCode);
+        if(subjectOpt.isEmpty()) {
+            return null;
+        }
         Optional<Course> courseOpt = courseRepository
-                .findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
+                .findBySubjectAndCourseNumberIgnoreCase(subjectOpt.get(), courseCode);
+//        Optional<Course> courseOpt = courseRepository
+//                .findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(subjectCode, courseCode);
 
         if (courseOpt.isEmpty()) {
             return null;
