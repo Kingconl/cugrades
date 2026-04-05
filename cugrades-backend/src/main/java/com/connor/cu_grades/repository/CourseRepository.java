@@ -38,6 +38,17 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
+    @Query(value = """
+    SELECT c.*
+    FROM courses c
+    JOIN subjects s ON c.subject_id = s.id
+    WHERE (s.code || ' ' || c.course_number) ILIKE CONCAT('%', :query, '%')
+    ORDER BY s.code, c.course_number
+""", nativeQuery = true)
+    List<Course> getCoursesByQuery(@Param("query") String query);
+
+
     Optional<Course> findBySubjectCodeIgnoreCaseAndCourseNumberIgnoreCase(String subjectCode, String courseNumber);
     Optional<Course> findBySubjectAndCourseNumberIgnoreCase(Subject subject, String courseNumber);
     List<Course> findAllBySubjectIdAndCourseNumberStartingWithOrderByCourseNumberAsc(int id, String prefix);

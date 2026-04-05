@@ -379,7 +379,7 @@ public class CourseService {
     }
 
     public List<BasicCourseReponse> getCoursesByQuery(String query) {
-        return courseRepository.findAllByCourseNumberContainingIgnoreCaseOrTitleContainingIgnoreCase(query.trim(), query.trim()).stream()
+        return courseRepository.getCoursesByQuery(query.trim()).stream()
                 .map(course -> new BasicCourseReponse(
                         course.getId(),
                         course.getCourseNumber(),
