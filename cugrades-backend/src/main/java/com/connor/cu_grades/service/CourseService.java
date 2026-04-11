@@ -44,8 +44,7 @@ public class CourseService {
         }
 
         Integer subjectId = subjectIdOpt.get();
-        List<Course> courses;
-        courses = courseRepository.findCoursesWithPagination(subjectId, prefix, limit, offset);
+        List<Course> courses = courseRepository.findCoursesWithPagination(subjectId, prefix, limit, offset);
         if (courses.isEmpty()) {
             return Collections.emptyList();
         }
